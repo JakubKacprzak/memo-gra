@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="author" content="Jakub Mikołaj Kacprzak" />
+    <title>Memo Game</title>
+    <link rel="stylesheet" href="css/tailwind.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      .gameBoard {
+        width: 500px;
+        height: 500px;
+        perspective: 1500px;
+        gap: 5px;
+      }
+      .card {
+        position: relative;
+        transform-style: preserve-3d;
+        transition: transform 0.5s;
+        cursor: pointer;
+        aspect-ratio: 1;
+        margin: 0;
+      }
+
+      .card-front {
+        background-image: url(./assets/bialo-niebieski-wzor-bezszwowej-kratki_713536-114.avif);
+        background-repeat: no-repeat;
+        background-size: cover;
+        border: 2px solid #5c9ce4;
+      }
+
+      .card.is-flipped {
+        transform: rotateY(180deg);
+      }
+
+      @keyframes fadeOut {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0;
+        }
+      }
+
+      .card-back.hideCard {
+        animation: fadeOut 0.5s 1s forwards;
+      }
+
+      .card-front,
+      .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 1.5em;
+      }
+
+      .card-front {
+        background-color: #ffffff;
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+      }
+    </style>
+  </head>
+  <body class="h-screen flex flex-col font-custom">
+    <div class="text-center p-5 mt-14">
+      <div class="text-5xl">Memory</div>
+    </div>
+    <!-- animacja napisu MEMORY, 2 tabliczki z literą odwracają się co jakis czas-->
+    <div id="startGameForm" class="grow flex items-center justify-center">
+      <form class="min-w-80 flex flex-col gap-4 text-lg select-none">
+        <div class="bg-blue-500 text-white rounded-lg p-4">
+          Poziom trudności
+        </div>
+        <div class="flex flex-row w-full gap-4">
+          <span class="w-1/3">
+            <input
+              class="peer hidden"
+              type="radio"
+              name="level"
+              id="easy"
+              value="easy"
+              checked
+            />
+            <label
+              class="block px-4 rounded-lg bg-gray-200 peer-checked:bg-green-500 peer-checked:text-white cursor-pointer text-center aspect-square place-content-center transition-all duration-200"
+              for="easy"
+              >łatwy</label
+            >
+          </span>
+          <span class="w-1/3">
+            <input
+              class="peer hidden"
+              type="radio"
+              name="level"
+              id="medium"
+              value="medium"
+            />
+            <label
+              class="block px-4 rounded-lg bg-gray-200 peer-checked:bg-yellow-500 peer-checked:text-white cursor-pointer text-center aspect-square place-content-center transition-all duration-200"
+              for="medium"
+              >średni</label
+            >
+          </span>
+          <span class="w-1/3">
+            <input
+              class="peer hidden"
+              type="radio"
+              name="level"
+              id="hard"
+              value="hard"
+            />
+            <label
+              class="block px-4 rounded-lg bg-gray-200 peer-checked:bg-red-600 peer-checked:text-white cursor-pointer text-center aspect-square place-content-center transition-all duration-200"
+              for="hard"
+              >trudny</label
+            >
+          </span>
+        </div>
+        <div class="flex flex-col">
+          <input
+            class="p-3 border-2 rounded-t-lg border-gray-400"
+            id="playerName"
+            type="text"
+            name="player-name"
+            placeholder="Podaj nazwe"
+            maxlength="8"
+            required
+          />
+          <button
+            class="py-3 rounded-b-lg bg-blue-500 text-white font-medium capitalize"
+            id="startGame"
+            type="submit"
+          >
+            GRAJ
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="gameDisplay m-auto relative">
+      <div
+        class="absolute -top-20 w-full mx-auto flex bg-blue-500 text-white rounded-lg"
+      >
+        <div class="grow level p-4"></div>
+        <div class="grow moves p-4"></div>
+        <div class="grow matchedCards p-4"></div>
+        <div class="timer p-4"></div>
+      </div>
+      <div class="scores-container bg-slate-200 mt-5" style="width: 500px">
+        <table class="min-w-full bg-white border">
+          <caption class="levelCaption p-2 bg-blue-500 text-white"></caption>
+          <thead class="bg-blue-500 text-white">
+            <tr>
+              <th class="px-4 py-2 border">Miejsce</th>
+              <th class="px-4 py-2 border">Nazwa</th>
+              <th class="px-4 py-2 border">Czas</th>
+              <th class="px-4 py-2 border">Ruchy</th>
+            </tr>
+          </thead>
+          <tbody class="scores-table-body"></tbody>
+        </table>
+      </div>
+      <div class="gameBoard justify-center relative"></div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="./js/index.js"></script>
+  </body>
+</html>

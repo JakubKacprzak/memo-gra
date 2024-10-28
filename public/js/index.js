@@ -179,7 +179,7 @@ $(document).ready(function () {
     const totalMilliseconds = min * 60 * 1000 + sec * 1000 + milisec;
 
     $.ajax({
-      url: "http://localhost:5000/game/save",
+      url: "https://memo-gra.vercel.app/game/save",
       method: "POST",
       data: {
         name: playerName,
@@ -202,7 +202,7 @@ $(document).ready(function () {
 
   function fetchScores(level) {
     $.ajax({
-      url: `http://localhost:5000/game/scores?level=${level}`,
+      url: `https://memo-gra.vercel.app/game/scores?level=${level}`,
       method: "GET",
       success: function (response) {
         displayScores(response);
